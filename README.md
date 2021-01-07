@@ -7,4 +7,5 @@ Pour pouvoir lancer l'application, il faut tout d'abord :
 * Taper npm install 
 * Installer une version 4.x de node-sass (par exemple npm install node-sass@4.14.1)
 * Lancer le serveur (ng serve)  
+
 Se rendre à l'adresse http://localhost:4200 et voir si l'application s'affiche correctement

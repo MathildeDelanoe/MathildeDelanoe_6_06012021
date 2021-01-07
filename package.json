@@ -1,0 +1,23 @@
+{
+  "name": "mathildedelanoe_6_06012021",
+  "version": "1.0.0",
+  "description": "Pour pouvoir lancer l'application, il faut tout d'abord :\r * cloner le repo https://github.com/OpenClassrooms-Student-Center/dwj-projet6.git\r * aller dans le répertoire dwj-projet6 (cd dwj-projet6)\r * Taper npm install \r * Installer une version 4.x de node-sass (par exemple npm install node-sass@4.14.1)\r * Lancer le serveur (ng serve)",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MathildeDelanoe/MathildeDelanoe_6_06012021.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MathildeDelanoe/MathildeDelanoe_6_06012021/issues"
+  },
+  "homepage": "https://github.com/MathildeDelanoe/MathildeDelanoe_6_06012021#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}
