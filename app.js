@@ -7,8 +7,11 @@ const bodyParser = require('body-parser');
 // Importer mongoose
 const mongoose = require('mongoose');
 
+// Importe le routeur
+const userRoutes = require('./routes/user')
 
-mongoose.connect('mongodb+srv://test:T€StUseR@cluster0.oahzn.mongodb.net/test?retryWrites=true&w=majority',
+// Connexion à la database mongoDB
+mongoose.connect('mongodb+srv://test:cabqJsGyFqgZ7TV@cluster0.oahzn.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -16,7 +19,6 @@ mongoose.connect('mongodb+srv://test:T€StUseR@cluster0.oahzn.mongodb.net/test?
 
 // Pour l'application
 const app = express();
-
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,6 +28,8 @@ app.use((req, res, next) => {
   });
 
 app.use(bodyParser.json());
+
+app.use('/api/auth', userRoutes);
 
 //exporter cette application
 module.exports = app;
