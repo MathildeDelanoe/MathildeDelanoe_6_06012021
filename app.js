@@ -4,6 +4,16 @@ const express = require('express');
 // Pour importer body-parser
 const bodyParser = require('body-parser');
 
+// Importer mongoose
+const mongoose = require('mongoose');
+
+
+mongoose.connect('mongodb+srv://test:T€StUseR@cluster0.oahzn.mongodb.net/test?retryWrites=true&w=majority',
+  { useNewUrlParser: true,
+    useUnifiedTopology: true })
+  .then(() => console.log('Connexion à MongoDB réussie !'))
+  .catch(() => console.log('Connexion à MongoDB échouée !'));
+
 // Pour l'application
 const app = express();
 
