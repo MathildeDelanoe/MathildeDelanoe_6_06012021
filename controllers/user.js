@@ -1,5 +1,7 @@
 // Import des dépendances et modeles
 const bcrypt = require('bcrypt');
+const jwt = require ('jsonwebtoken');
+
 const user = require('../models/user');
 
 // Gestion de l'enregistrement de nouveaux utilisateurs
@@ -47,7 +49,11 @@ exports.login = (req, res, next) => {
             // Envoi d'un objet json qui contient l'identifiant de l'utilisateur et un token
             res.status(200).json({
                 userId: foundUser._id,
-                token: 'TOKEN'
+                token: jwt.sign(
+                    { userId: foundUser.id},
+                    'RANDOM_TOKEN_SECRET',
+                    { expiresIn: '24h' }
+                )
             });
         })
         .catch(error => res.status(500).json({ error }));
