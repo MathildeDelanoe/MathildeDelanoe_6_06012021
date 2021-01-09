@@ -7,8 +7,13 @@ const bodyParser = require('body-parser');
 // Importer mongoose
 const mongoose = require('mongoose');
 
+const path = require('path');
+
+const Sauce = require('./models/sauce');
+
 // Importe le routeur
-const userRoutes = require('./routes/user')
+const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce');
 
 // Connexion à la database mongoDB
 mongoose.connect('mongodb+srv://test:cabqJsGyFqgZ7TV@cluster0.oahzn.mongodb.net/test?retryWrites=true&w=majority',
@@ -16,6 +21,7 @@ mongoose.connect('mongodb+srv://test:cabqJsGyFqgZ7TV@cluster0.oahzn.mongodb.net/
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
+mongoose.set('useCreateIndex', true);
 
 // Pour l'application
 const app = express();
@@ -29,7 +35,10 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 app.use('/api/auth', userRoutes);
+app.use('/api/sauces', sauceRoutes);
 
 //exporter cette application
 module.exports = app;
