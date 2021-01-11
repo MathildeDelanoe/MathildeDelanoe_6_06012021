@@ -11,13 +11,9 @@ const storage = multer.diskStorage({
         callback(null, 'images')
     },
     filename: (req, file, callback) => {
-        console.log(file.originalname)
-        const name = file.originalname.split(' ').join('_'); // Elimine les espaces et les remplace par des _
-        console.log(name)
         const extension = MIME_TYPES[file.mimetype];
-        console.log(extension)
         // Timestamp pour rendre l'image unique
-        callback(null, name + Date.now() + '.' + extension);
+        callback(null, 'sauce_' + Date.now() + '.' + extension);
     }
 });
 

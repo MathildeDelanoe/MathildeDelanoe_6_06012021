@@ -1,4 +1,5 @@
 // Import du modèle
+const { JsonWebTokenError } = require('jsonwebtoken');
 const sauce = require('../models/sauce');
 
 // Gestion de l'ajout d'une sauce grâce à "ajouter une sauce"
@@ -24,9 +25,21 @@ exports.getAllSauces = (req, res, next) => {
   .catch(error => res.status(400).json({ error }));
 };
 
-// Gestion de la récupération de la liste entière de sauces
+// Gestion de la récupération d'une sauce
 exports.getOneSauce = (req, res, next) => {
   sauce.findOne({ _id: req.params.id})
   .then(sauce => res.status(200).json(sauce))
   .catch(error => res.status(404).json({ error }));
+};
+
+// Gestion de la modification une sauce
+exports.modifySauce = (req, res, next) => {
+  const modifiedSauce = req.file ?
+    { 
+      ...JSON.parse(req.body.sauce),
+      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+     } : { ...req.body };
+  sauce.updateOne({_id: req.params.id}, {...modifiedSauce, _id:req.params.id})
+  .then(() => res.status(200).json({message: 'Sauce modifiée !'}))
+  .catch(error => res.status(400).json({ error }));
 };
