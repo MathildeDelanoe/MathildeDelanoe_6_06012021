@@ -7,6 +7,9 @@ const sauceCtrl = require('../controllers/sauce');
 
 // Création des routes avec authentification
 router.get('/', auth, sauceCtrl.getAllSauces);
+router.get('/:id', auth, sauceCtrl.getOneSauce);
 router.post('/', auth, multer, sauceCtrl.createSauce);
+
+
 
 module.exports = router;
