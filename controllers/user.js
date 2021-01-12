@@ -1,27 +1,60 @@
 // Import des dépendances
 const bcrypt = require('bcrypt');
 const jwt = require ('jsonwebtoken');
+var passwordValidator = require('password-validator');
 
 // Import du modèle
 const user = require('../models/user');
 
+var schema = new passwordValidator();
+
+schema
+  .is().min(8)
+  .is().max(30)
+  .has().uppercase()
+  .has().lowercase()
+  .has().digits(1)
+  .has().not().spaces();
+
+
+function checkPassword(password)
+{
+    console.log('checkPassword')
+    console.log(password)
+    return new Promise((resolve, reject) => {
+        if (schema.validate(password))
+        {
+            resolve(true);
+        }
+        else
+        {
+            reject('Votre mot de passe ne remplit pas les critères');
+        }
+    });
+}
+
 // Gestion de l'enregistrement de nouveaux utilisateurs
 exports.signup = (req, res, next) => {
-    // Fonction pour crypter le mot de passe via hash
-    bcrypt.hash(req.body.password, 10) // 10 iterations
-    .then(hash => {
-        // Creation d'un nouvel utilisateur avec son email et son mot de passe crypté
-        const signedUser = new user({
-            email: req.body.email,
-            password: hash
-        }); 
-        
-        // Sauvegarde du nouvel utilisateur dans la base de données
-        signedUser.save()
-            .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-            .catch(error => res.status(400).json({ error }));
+    checkPassword(req.body.password)
+    .then(() => {
+        console.log('cryptage')
+        // Fonction pour crypter le mot de passe via hash
+        bcrypt.hash(req.body.password, 10) // 10 iterations
+        .then(hash => {
+            // Creation d'un nouvel utilisateur avec son email et son mot de passe crypté
+            const signedUser = new user({
+                email: req.body.email,
+                password: hash
+            }); 
+            
+            // Sauvegarde du nouvel utilisateur dans la base de données
+            signedUser.save()
+                .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+                .catch(error => res.status(400).json({error}));
+        })
+        .catch(error => res.status(500).json({ error }));
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch((error) => {res.status(403).json({error});});
 };
 
 // Gestion de la connexion des utilisateurs existants
