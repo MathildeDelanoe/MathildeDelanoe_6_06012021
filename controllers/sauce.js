@@ -95,11 +95,12 @@ exports.likeSauce = (req, res, next) => {
         }
         message = "supression du précédent choix";
       }
-        sauce.likes = sauce.usersLiked.length;
-        sauce.dislikes = sauce.usersDisliked.length;
-        sauce.save()
-        .then(() => res.status(201).json(message))
-        .catch(error => res.status(400).json({ error }));
-      })
+      sauce.likes = sauce.usersLiked.length;
+      sauce.dislikes = sauce.usersDisliked.length;
+
+      sauce.save()
+      .then(() => res.status(201).json(message))
+      .catch(error => res.status(400).json({ error }));
+    })
     .catch(error => res.status(400).json({ error }))
 };
