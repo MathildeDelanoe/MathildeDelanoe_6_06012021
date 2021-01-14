@@ -33,29 +33,49 @@ function checkPassword(password)
 }
 
 
+function checkEmail(email)
+{
+    return new Promise((resolve, reject) => {
+        const regex = /[A-z0-9_.-]+@[A-z]+.[A-z]{2,3}$/gm;
+        if (email.match(regex) !== null)
+        {
+            resolve(true);
+        }
+        else
+        {
+            throw new Error('Votre email ne remplit pas les critères');
+        }
+    });
+}
+
 // Gestion de l'enregistrement de nouveaux utilisateurs
 exports.signup = (req, res, next) => {
-    checkPassword(req.body.password)
-    .then(() => {
-        // Chiffrement de l'adresse email
-        let encryptedEmail = cryptoJs.AES.encrypt(req.body.email, "key").toString();
-        // Fonction pour crypter le mot de passe via hash
-        bcrypt.hash(req.body.password, 10) // 10 iterations
-        .then(hash => {
-            // Creation d'un nouvel utilisateur avec son email et son mot de passe crypté
-            const signedUser = new user({
-                email: encryptedEmail,
-                password: hash
-            }); 
-            
-            // Sauvegarde du nouvel utilisateur dans la base de données
-            signedUser.save()
-                .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
-                .catch(error => res.status(400).json({error}));
-        })
-        .catch(error => res.status(500).json({ error }));
-    })
-    .catch((error) => {res.status(403).json({error});});
+    checkEmail(req.body.email)
+        .then(() => 
+            checkPassword(req.body.password)
+            .then(() => {
+                // Chiffrement de l'adresse email
+                let encryptedEmail = cryptoJs.AES.encrypt(req.body.email, "key").toString();
+                // Fonction pour crypter le mot de passe via hash
+                bcrypt.hash(req.body.password, 10) // 10 iterations
+                .then(hash => {
+                    // Creation d'un nouvel utilisateur avec son email et son mot de passe crypté
+                    const signedUser = new user({
+                        email: encryptedEmail,
+                        password: hash
+                    }); 
+                    
+                    // Sauvegarde du nouvel utilisateur dans la base de données
+                    signedUser.save()
+                        .then(() => res.status(201).json({ message: 'Utilisateur créé !' }))
+                        .catch(error => res.status(400).json({error}));
+                    })
+                    
+                .catch(error => res.status(500).json({ error }));
+            })
+            .catch((error) => {res.status(403).json({error});})
+        )
+        .catch((error => {console.log(error); res.status(500).json({ error });}))
 };
 
 // Gestion de la connexion des utilisateurs existants
