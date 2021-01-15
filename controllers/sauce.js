@@ -39,12 +39,18 @@ exports.modifySauce = (req, res, next) => {
       ...JSON.parse(req.body.sauce),
       imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
      } : { ...req.body };
-  sauce.updateOne({_id: req.params.id}, {...modifiedSauce, _id:req.params.id})
-    .then(() => res.status(200).json({message: 'Sauce modifiée !'}))
-    .catch(error => res.status(400).json({ error }));
+  sauce.findOne({_id: req.params.id})
+    .then(currentsauce => {
+      const filename = currentsauce.imageUrl.split('/images/')[1];// on récupère le deuxième élément du tableau pour avoir le nom du fichier
+      sauce.updateOne({_id: req.params.id}, {...modifiedSauce, _id:req.params.id})
+        .then(() => fs.unlink('images/' + filename,() => {
+          res.status(200).json({message: 'Sauce modifiée !'})}))
+        .catch(error => res.status(400).json({ error }))
+    })
+    .catch(error => res.status(500).json({ error }));
 };
 
-// Gestion de la récupération d'une sauce
+// Gestion de la suppression d'une sauce
 exports.deleteSauce = (req, res, next) => {
   sauce.findOne({_id: req.params.id})
     .then(sauce => {
@@ -57,7 +63,6 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
-
 
 // Gestion du like ou du dislike d'une sauce
 exports.likeSauce = (req, res, next) => {
