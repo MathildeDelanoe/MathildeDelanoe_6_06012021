@@ -117,7 +117,6 @@ exports.login = (req, res, next) => {
                 // Envoi d'un objet json qui contient l'identifiant de l'utilisateur et un token
                 res.status(200).json({
                     userId: foundUser._id,
-                    // token:'TOKEN'
                     token: jwt.sign(
                         { userId: foundUser._id},
                         'RANDOM_TOKEN_SECRET',

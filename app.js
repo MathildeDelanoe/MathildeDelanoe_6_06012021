@@ -3,6 +3,8 @@ const express = require('express');
 
 // Pour importer body-parser
 const bodyParser = require('body-parser');
+// Pour importer mongo-sanitize
+const mongoSanitize = require('express-mongo-sanitize');
 
 // Importer mongoose
 const mongoose = require('mongoose');
@@ -18,7 +20,7 @@ const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
 // Connexion à la database mongoDB
-mongoose.connect(`${process.env.DB_HOST}://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}/test?retryWrites=true&w=majority`,
+mongoose.connect(`${process.env.DB_HOST}://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTERURL}/test?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
@@ -29,6 +31,8 @@ mongoose.set('useCreateIndex', true);
 const app = express();
 
 app.use(helmet());
+// To remove prohibited character
+app.use(mongoSanitize());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
