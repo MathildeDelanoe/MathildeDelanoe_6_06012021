@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
 
 const path = require('path');
 
-const Sauce = require('./models/sauce');
+const helmet = require('helmet');
 
 require('dotenv').config();
 
@@ -27,6 +27,8 @@ mongoose.set('useCreateIndex', true);
 
 // Pour l'application
 const app = express();
+
+app.use(helmet());
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
