@@ -11,12 +11,14 @@ const path = require('path');
 
 const Sauce = require('./models/sauce');
 
+require('dotenv').config();
+
 // Importe le routeur
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 
 // Connexion à la database mongoDB
-mongoose.connect('mongodb+srv://test:cabqJsGyFqgZ7TV@cluster0.oahzn.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect(`${process.env.DB_HOST}://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_CLUSTER}/test?retryWrites=true&w=majority`,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
