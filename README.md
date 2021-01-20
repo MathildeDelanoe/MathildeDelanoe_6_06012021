@@ -9,3 +9,14 @@ Pour pouvoir lancer l'application, il faut tout d'abord :
 * Lancer le serveur (ng serve)  
 
 Se rendre à l'adresse http://localhost:4200 et voir si l'application s'affiche correctement
+
+## Niveau sécurité
+Créer un fichier .env et mettre dans ce fichier les informations
+DB_HOST
+DB_USER
+DB_PASS
+DB_CLUSTERURL
+
+## Pour lancer le backend
+Aller dans le dossier backend et lancer le serveur avec nodemon server
+
