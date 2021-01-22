@@ -116,11 +116,11 @@ exports.login = (req, res, next) => {
                 // Décrytage de l'email présent danse MongoDB
                 var bytes  = cryptoJs.AES.decrypt(user.email, 'key');
                 var originalEmail = bytes.toString(cryptoJs.enc.Utf8);
-                // Si l'email correspond on sort de la boucle for
+                // Comparaison des emails
                 if (originalEmail === req.body.email)
                 {
                     currentEmail = user.email; // Stockage de l'email crypté
-                    break;
+                    break; // Si l'email correspond on sort de la boucle for
                 }
             }
              // Recherche de l'utilisateur dans la base de données à partir de son email crypté
