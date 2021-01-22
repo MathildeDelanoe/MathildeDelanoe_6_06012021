@@ -14,10 +14,10 @@ Se rendre à l'adresse http://localhost:4200 et voir si l'application s'affiche 
 ### Backend
 * Télécharger ce repo
 * Créer un fichier .env, placé à la racine du repo, qui contient les informations
-`* DB_HOST`
-`* DB_USER`
-`* DB_PASS`
-`* DB_CLUSTERURL`
+  * DB_HOST
+  * DB_USER
+  * DB_PASS
+  * DB_CLUSTERURL
 
 ## Démarrer le serveur
 Aller dans le dossier backend et lancer le serveur avec nodemon server
